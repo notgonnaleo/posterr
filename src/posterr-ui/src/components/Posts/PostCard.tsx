@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { styled, Card, CardContent, CardMedia, Typography } from "@mui/material";
-import type PostProps from "../../models/Post";
+import Post from "../../models/Post";
 
 interface Params {
-    data: PostProps
+    data: Post
 }
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -44,7 +44,7 @@ const StyledTypography = styled(Typography)({
   textOverflow: 'ellipsis',
 });
 
-const Post: React.FC<Params> = ({ data }) => {
+const PostCard: React.FC<Params> = ({ data }) => {
   const [focusedCardIndex, setFocusedCardIndex] = useState<number | null>(null);
 
   const handleFocus = () => setFocusedCardIndex(0);
@@ -83,4 +83,4 @@ const Post: React.FC<Params> = ({ data }) => {
   );
 };
 
-export default Post;
+export default PostCard;

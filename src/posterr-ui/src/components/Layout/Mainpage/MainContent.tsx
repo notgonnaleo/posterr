@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Header from '../../Header/Header';
 import Feed from '../../Posts/Feed';
 import HeroTitle from '../../Hero/HeroTitle';
+import CreatePostSection from '../../Posts/CreatePostSection';
 
 function Author({ authors }: { authors: { name: string; avatar: string }[] }) {
   return (
@@ -42,9 +43,14 @@ function Author({ authors }: { authors: { name: string; avatar: string }[] }) {
 
 export default function MainContent() {
   return(
-    <Box>
-      <Header />
-        <Box sx={{ mt: 4 }}> {/* Espaçamento entre Header e Feed */}
+    <Box sx={{ flex: 1 }}>
+      <Box>
+        <Header />
+      </Box>
+        <Box sx={{ mt: 4 }}>
+          <CreatePostSection />
+        </Box>
+        <Box sx={{ mt: 4 }}>
           <Feed />
         </Box>
     </Box>

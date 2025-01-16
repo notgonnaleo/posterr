@@ -1,6 +1,5 @@
-import { FormControl, OutlinedInput, InputAdornment, Box, IconButton } from "@mui/material";
+import { FormControl, OutlinedInput, InputAdornment, Box } from "@mui/material";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { Search } from "@mui/icons-material";
 
 const Searchbar = () => {
     return(

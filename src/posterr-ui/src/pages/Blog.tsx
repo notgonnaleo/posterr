@@ -11,9 +11,18 @@ export default function Blog(props: { disableCustomTheme?: boolean }) {
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
       <AppAppBar />
-        <Container maxWidth="lg" component="main" sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 4 }}>
+      <Container
+          maxWidth="lg"
+          component="main"
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' }, // coluna para telas pequenas e linha para telas grandes
+            my: 16,
+            gap: 4,
+          }}
+        >
           <MainContent />
-          <Latest />
+          {/* <Latest /> */}
         </Container>
       <Footer />
     </AppTheme>

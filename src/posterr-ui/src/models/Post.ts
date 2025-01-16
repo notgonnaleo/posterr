@@ -1,4 +1,4 @@
-export default interface PostProps {
+export default interface Post {
     img: string;
     tag: string;
     title: string;
