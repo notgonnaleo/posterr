@@ -1,8 +1,11 @@
+import axios from "axios";
 import Post from "../models/Post";
+
+const controller = "api/Post";
 
 const PostFactory = {
     getPosts: async (): Promise<Post[]> => {
-        const response : Post[] = [
+        const fakeResponse : Post[] = [
         {
             img: "https://picsum.photos/800/450?random=1",
             tag: "Engineering",
@@ -88,7 +91,9 @@ const PostFactory = {
             "Explore the key features of our latest product release that are helping businesses achieve their goals. From user-friendly interfaces to robust functionality, learn why our product stands out.",
         },
         ];
-        return response;
+
+        const response = await axios.get<Post[]>(`${controller}/Feed`)
+        return response.data;
     }
 }
 

@@ -7,7 +7,7 @@ using Posterr.Infrastructure.Contexts;
 namespace Posterr.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/Posts")]
     public class PostController : ControllerBase
     {
         private readonly AppDbContext _context; // Remove it later
