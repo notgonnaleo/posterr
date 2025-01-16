@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Posterr.Domain.Interfaces;
 using Posterr.Infrastructure.Contexts;
+using Posterr.Infrastructure.Repositories;
+using Posterr.Infrastructure.Services;
 
 namespace Posterr.API
 {
@@ -12,6 +15,9 @@ namespace Posterr.API
             // Add services to the container.
             builder.Services.AddDbContext<AppDbContext>(options => 
                 options.UseInMemoryDatabase("PosterDb"));
+
+            builder.Services.AddScoped<IPostRepository, PostRepository>();
+            builder.Services.AddScoped<IPostService, PostService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
