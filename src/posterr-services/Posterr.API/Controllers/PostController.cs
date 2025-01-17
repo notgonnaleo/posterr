@@ -26,7 +26,7 @@ namespace Posterr.API.Controllers
             _context.Posts.Add(new Post()
             {
                 PostId = 1,
-                Description = "Test"
+                PostContent = "Test"
             });
             await _context.SaveChangesAsync();
 

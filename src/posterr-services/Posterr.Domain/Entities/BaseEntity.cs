@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Posterr.Domain.Entities
 {
-    public class Post : BaseEntity
+    public class BaseEntity
     {
-        public int PostId { get; set; }
-        public string PostContent { get; set; }
-        public int UserId { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

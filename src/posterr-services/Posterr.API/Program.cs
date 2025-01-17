@@ -13,8 +13,14 @@ namespace Posterr.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<AppDbContext>(options => 
-                options.UseInMemoryDatabase("PosterDb"));
+
+            // In memory for test
+            //builder.Services.AddDbContext<AppDbContext>(options => 
+            //    options.UseInMemoryDatabase("PosterrDb"));
+
+            // Real local database
+            builder.Services.AddDbContext<AppDbContext>(opt =>
+                opt.UseNpgsql(builder.Configuration.GetConnectionString("PosterrDb")));
 
             builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IPostService, PostService>();
