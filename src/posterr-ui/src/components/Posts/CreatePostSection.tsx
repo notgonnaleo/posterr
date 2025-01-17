@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextField, Box, Typography, TextareaAutosize, styled, FormControl, InputAdornment, OutlinedInput } from '@mui/material';
+import { Button, Box, TextareaAutosize, styled, FormControl } from '@mui/material';
 import { gray } from '../../theme/themePrimitives';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 

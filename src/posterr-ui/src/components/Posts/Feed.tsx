@@ -18,7 +18,7 @@ const Feed = () => {
   }
 
   return (
-    postList != null && postList.length > 0 ? (
+    postList != null && (Array.isArray(postList) && postList.length > 0) ? (
     <Grid container spacing={2} columns={1}>
       {postList.map((data, index) => (
         <Grid  size={{ xs: 12, md: 4 }} key={index}>

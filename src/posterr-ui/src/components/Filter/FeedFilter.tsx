@@ -9,6 +9,7 @@ const FeedFilter = () => {
     return(
         <Box
         sx={{
+          marginTop: '26px',
           display: 'flex',
           flexDirection: { xs: 'column-reverse', md: 'row' },
           width: '100%',

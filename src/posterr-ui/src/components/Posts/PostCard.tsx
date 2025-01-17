@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { styled, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { styled, Card, CardContent, Typography, IconButton, Box } from "@mui/material";
 import Post from "../../models/Post";
+import { Favorite, Replay } from "@mui/icons-material";
 
 interface Params {
     data: Post
@@ -58,26 +59,33 @@ const PostCard: React.FC<Params> = ({ data }) => {
       tabIndex={0}
       className={focusedCardIndex === 0 ? 'Mui-focused' : ''}
     >
-      {/* <CardMedia
-        component="img"
-        alt={data.title}
-        image={data.img}
-        sx={{
-          aspectRatio: '16 / 9',
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-        }}
-      /> */}
       <StyledCardContent>
         <Typography gutterBottom variant="caption" component="div">
-          {data.tag}
+          @notgonnaleo
         </Typography>
+        {/* Add another one which is the original author + new reposter when making reposts */}
         <Typography gutterBottom variant="h6" component="div">
           {data.title}
         </Typography>
         <StyledTypography variant="body2" color="text.secondary" gutterBottom>
           {data.description}
         </StyledTypography>
+        
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 'auto' }}>
+          <Box>
+            <IconButton sx={{margin: '4px'}} color="primary">
+              <Favorite />
+            </IconButton>
+            0
+          </Box>
+
+          <Box>
+            <IconButton sx={{margin: '4px'}} color="primary">
+              <Replay />
+            </IconButton>
+            0
+          </Box>
+        </Box>
       </StyledCardContent>
     </StyledCard>
   );

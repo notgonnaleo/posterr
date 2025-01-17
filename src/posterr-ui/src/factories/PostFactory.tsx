@@ -93,7 +93,7 @@ const PostFactory = {
         ];
 
         const response = await axios.get<Post[]>(`${controller}/Feed`)
-        return response.data;
+        return fakeResponse;
     }
 }
 

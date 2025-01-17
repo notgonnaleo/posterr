@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Header from '../../Header/Header';
 import Feed from '../../Posts/Feed';
-import HeroTitle from '../../Hero/HeroTitle';
 import CreatePostSection from '../../Posts/CreatePostSection';
 
 function Author({ authors }: { authors: { name: string; avatar: string }[] }) {
