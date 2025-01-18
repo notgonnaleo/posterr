@@ -13,15 +13,16 @@ const Feed = () => {
   }, []);
 
   const getPostsList = async () => {
-    var posts = await PostFactory.getPosts();
+    const posts = await PostFactory.getPosts();
     setPostList(posts);
   }
 
+  // PROBLEM HERE, NEED TO FIX ASAP
   return (
     postList.length > 0 ? (
     <Grid container spacing={2} columns={1}>
       {postList.map((data, index) => (
-        <Grid  size={{ xs: 12, md: 4 }} key={index}>
+        <Grid size={{ xs: 12, md: 4 }} key={index}>
           <PostCard data={data} />
         </Grid>
       ))}

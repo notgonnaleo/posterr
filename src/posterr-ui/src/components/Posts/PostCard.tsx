@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { styled, Card, CardContent, Typography, IconButton, Box } from "@mui/material";
-import { Favorite, Replay } from "@mui/icons-material";
+import RepeatIcon from '@mui/icons-material/Repeat';
 import FeedItem from "../../models/Post";
 
 interface Params {
@@ -60,23 +60,31 @@ const PostCard: React.FC<Params> = ({ data }) => {
       className={focusedCardIndex === 0 ? 'Mui-focused' : ''}
     >
       <StyledCardContent>
-        <Typography gutterBottom variant="caption" component="div">
+        {/* TODO: Come back here and make better styles for this  */}
+        <Typography sx={{display: 'flex', alignItems: 'center'}} gutterBottom variant="caption" component="div">
+          {data.repostUsername && (
+            <Box>
+              <RepeatIcon fontSize="small" />{` @${data.repostUsername} reposted `}
+            </Box>
+          )}
+        </Typography>
+        
+        <Typography gutterBottom variant="h6" component="div">
           @{data.authorName}
         </Typography>
-        {/* Add another one which is the original author + new reposter when making reposts */}
-        <Typography gutterBottom variant="h6" component="div">
-          {data.repostUsername}
-        </Typography>
-        <StyledTypography variant="body2" color="text.secondary" gutterBottom>
+
+        <StyledTypography variant="body2" color="text.primary" gutterBottom>
           {data.postContent}
         </StyledTypography>
         
         <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 'auto' }}>
           <Box>
             <IconButton sx={{margin: '4px'}} color="primary">
-              <Replay />
+              <RepeatIcon />
+              <Typography variant="inherit" sx={{fontSize: '14px', padding: '2px'}}>
+                {data.totalReposts}
+              </Typography>
             </IconButton>
-            {data.totalReposts}
           </Box>
         </Box>
       </StyledCardContent>

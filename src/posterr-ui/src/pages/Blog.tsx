@@ -3,9 +3,10 @@ import Container from '@mui/material/Container';
 import AppTheme from '../theme/AppTheme';
 import AppAppBar from '../components/Layout/Navbar/AppAppBar';
 import MainContent from '../components/Layout/Mainpage/MainContent';
-import Latest from '../components/Topics/Latest';
 import Footer from '../components/Layout/Footer/Footer';
 
+// For now, Im just letting this page like this because I will come back and change it
+// im more focused on making the main requirements first.
 export default function Blog(props: { disableCustomTheme?: boolean }) {
   return (
     <AppTheme {...props}>
@@ -16,7 +17,7 @@ export default function Blog(props: { disableCustomTheme?: boolean }) {
           component="main"
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' }, // coluna para telas pequenas e linha para telas grandes
+            flexDirection: { xs: 'column', md: 'row' },
             my: 16,
             gap: 4,
           }}
