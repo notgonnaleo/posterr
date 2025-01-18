@@ -25,7 +25,7 @@ namespace Posterr.API.Controllers
             {
                 var request = new GetLatestFeedRequest();
                 var response = await _mediator.Send(request);
-                return Ok(response.FeedItems9);
+                return Ok(response.FeedItems);
             }
             catch (Exception ex)
             {
