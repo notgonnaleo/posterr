@@ -1,12 +1,12 @@
 import Grid from "@mui/material/Grid2";
 import PostCard from "./PostCard";
-import Post from "../../models/Post";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import PostFactory from "../../factories/PostFactory";
+import FeedItem from "../../models/Post";
 
 const Feed = () => {
-  const [postList, setPostList] = useState<Post[]>([]);
+  const [postList, setPostList] = useState<FeedItem[]>([]);
 
   useEffect(() => {
     getPostsList();
@@ -18,7 +18,7 @@ const Feed = () => {
   }
 
   return (
-    postList != null && (Array.isArray(postList) && postList.length > 0) ? (
+    postList.length > 0 ? (
     <Grid container spacing={2} columns={1}>
       {postList.map((data, index) => (
         <Grid  size={{ xs: 12, md: 4 }} key={index}>

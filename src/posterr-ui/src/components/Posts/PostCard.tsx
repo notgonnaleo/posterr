@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { styled, Card, CardContent, Typography, IconButton, Box } from "@mui/material";
-import Post from "../../models/Post";
 import { Favorite, Replay } from "@mui/icons-material";
+import FeedItem from "../../models/Post";
 
 interface Params {
-    data: Post
+    data: FeedItem
 }
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -61,29 +61,22 @@ const PostCard: React.FC<Params> = ({ data }) => {
     >
       <StyledCardContent>
         <Typography gutterBottom variant="caption" component="div">
-          @notgonnaleo
+          @{data.authorName}
         </Typography>
         {/* Add another one which is the original author + new reposter when making reposts */}
         <Typography gutterBottom variant="h6" component="div">
-          {data.title}
+          {data.repostUsername}
         </Typography>
         <StyledTypography variant="body2" color="text.secondary" gutterBottom>
-          {data.description}
+          {data.postContent}
         </StyledTypography>
         
         <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 'auto' }}>
           <Box>
             <IconButton sx={{margin: '4px'}} color="primary">
-              <Favorite />
-            </IconButton>
-            0
-          </Box>
-
-          <Box>
-            <IconButton sx={{margin: '4px'}} color="primary">
               <Replay />
             </IconButton>
-            0
+            {data.totalReposts}
           </Box>
         </Box>
       </StyledCardContent>

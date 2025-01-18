@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
@@ -51,6 +52,16 @@ namespace Posting.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(o =>
+            {
+                var uiUrl = builder.Configuration.GetValue<string>("UI_URL");
+                o.AddDefaultPolicy(b => 
+                    b.WithOrigins(uiUrl)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                );
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -64,7 +75,7 @@ namespace Posting.API
 
             app.UseAuthorization();
 
-
+            app.UseCors();
             app.MapControllers();
 
             app.Run();

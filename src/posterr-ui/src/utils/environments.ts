@@ -1,0 +1,1 @@
+export const endpoint = import.meta.env.VITE_BASE_URL;
