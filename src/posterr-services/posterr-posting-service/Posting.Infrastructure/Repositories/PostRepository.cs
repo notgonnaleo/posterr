@@ -69,5 +69,10 @@ namespace Posting.Infrastructure.Repositories
             _context.Posts.Update(post);
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
+
+        public async Task<IEnumerable<Post>?> GetPostsByUserId(int userId)
+        {
+           return await _context.Posts.Where(x => x.UserId == userId).ToListAsync();
+        }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using Posting.Domain.Models;
 
 namespace Posting.Domain.Queries.Requests
 {
-    public class GetTrendingFeedRequest : IRequest<GetTrendingFeedResponse>
+    public class GetTrendingFeedRequest : IRequest<IEnumerable<FeedItem>>
     {
         public GetTrendingFeedRequest(int take, int skip)
         {

@@ -21,32 +21,18 @@ namespace Posterr.API.Controllers
         [Route("latest")]
         public async Task<ActionResult<IEnumerable<FeedItem>>> GeLatestFeed(int take, int skip)
         {
-            try
-            {
-                var request = new GetLatestFeedRequest(take, skip);
-                var response = await _mediator.Send(request);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var request = new GetLatestFeedRequest(take, skip);
+            var response = await _mediator.Send(request);
+            return Ok(response);    
         }
 
         [HttpGet]
         [Route("trending")]
         public async Task<ActionResult<IEnumerable<FeedItem>>> GetTrendingFeed(int take, int skip)
         {
-            try
-            {
-                var request = new GetTrendingFeedRequest(take, skip);
-                var response = await _mediator.Send(request);
-                return Ok(response.FeedItems);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var request = new GetTrendingFeedRequest(take, skip);
+            var response = await _mediator.Send(request);
+            return Ok(response);
         }
 
         [HttpPost]

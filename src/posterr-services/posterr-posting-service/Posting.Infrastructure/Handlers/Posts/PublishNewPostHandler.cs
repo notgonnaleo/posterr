@@ -16,6 +16,21 @@ namespace Posting.Infrastructure.Handlers.Posts
 
         public async Task<bool> Handle(CreatePostRequest request, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrEmpty(request.PostContent))
+            {
+                throw new ArgumentException("You cannot publish an empty post");
+            }
+
+            var authorPosts = await _postService.GetPostsByUserId(request.AuthorId);
+            if(authorPosts is not null) 
+            {
+                var latestPosts = authorPosts.Select(x => x.DateCreated.Date.Day == DateTime.UtcNow.Day);
+                if (latestPosts.Count() > 5)
+                {
+                    throw new Exception("You cannot publish more posts than you already have (5 posts per day)");
+                }
+            }
+
             // NOTE: Usually on international SaaS, we can treat dates as UTC and then
             // we would get the offset from another service (something like an user profile service) 
             // by making him insert his location somewhere so we could convert it on the server-side

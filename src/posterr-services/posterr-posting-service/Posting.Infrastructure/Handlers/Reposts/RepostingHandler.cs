@@ -23,16 +23,25 @@ namespace Posting.Infrastructure.Handlers.Reposts
 
         public async Task<RepostResponse> Handle(RepostRequest request, CancellationToken cancellationToken)
         {
+            if(request.PostId == 0)
+            {
+                throw new KeyNotFoundException("You cannot repost something that doesn't exist.");
+            }
+
             int? repostLogId = null; 
             bool Reposted = false;
 
             var post = await _postService.GetPostById(request.PostId);            
             if(post is null)
             {
-                // throw exception
-                return new RepostResponse();
+                throw new KeyNotFoundException("The post you're trying to repost does not exist or is deleted.");
             }
             
+            if(post.UserId == request.UserId)
+            {
+                throw new Exception("You cannot repost your own posts.");
+            }
+
             if (request.IsReposting) // Save the repost action on database
             {
                 post.TotalReposts++;

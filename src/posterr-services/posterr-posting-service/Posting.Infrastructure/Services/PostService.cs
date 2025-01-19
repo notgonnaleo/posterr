@@ -31,6 +31,11 @@ namespace Posting.Infrastructure.Services
             return await _postRepository.GetPostById(postId);
         }
 
+        public async Task<IEnumerable<Post>?> GetPostsByUserId(int userId)
+        {
+            return await _postRepository.GetPostsByUserId(userId);
+        }
+
         public async Task<IEnumerable<PostThumbnail>> GetPostThumbnails(int take, int skip)
         {
             take = take <= 0 ? 0 : take;

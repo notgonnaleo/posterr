@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using Posting.API.Middlewares;
 using Posting.Domain.Interfaces.Repositories;
 using Posting.Domain.Interfaces.Services;
 using Posting.Infrastructure.Contexts;
@@ -61,6 +62,7 @@ namespace Posting.API
             });
 
             var app = builder.Build();
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

@@ -25,13 +25,17 @@ namespace Posting.Infrastructure.Handlers.Posts
             var latestPosts = await _postService.GetLatestPosts(request.Take, request.Skip);
             var latestReposts = await _repostRepository.GetLatestReposts(request.Take, request.Skip);
 
-            if (latestPosts != null && latestPosts.Any() && latestReposts != null && latestReposts.Any())
+            // If we don't have anything posted yet, let's just return an empty list
+            // the UI will know what it must do when this happens, it shouldn't be a problem.
+            if (latestPosts is null || !latestPosts.Any() || latestReposts is null || !latestReposts.Any())
             {
-                var mappedPostToFeedItem = latestPosts.Select(feedItem => new FeedItem(feedItem));
-                var mappedRepostToFeedItem = latestReposts.Select(feedItem => new FeedItem(feedItem));
-                feedItems.AddRange(mappedPostToFeedItem);
-                feedItems.AddRange(mappedRepostToFeedItem);
+                return feedItems;
             }
+
+            var mappedPostToFeedItem = latestPosts.Select(feedItem => new FeedItem(feedItem));
+            var mappedRepostToFeedItem = latestReposts.Select(feedItem => new FeedItem(feedItem));
+            feedItems.AddRange(mappedPostToFeedItem);
+            feedItems.AddRange(mappedRepostToFeedItem);
 
             // Re-ordering from the latest to oldest posts & reposts
             // to make sure our list is going to be accurate.
