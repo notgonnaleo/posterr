@@ -7,7 +7,7 @@ using Posting.Domain.Queries.Responses;
 
 namespace Posting.Infrastructure.Handlers.Posts
 {
-    public class GetLatestFeedHandler : IRequestHandler<GetLatestFeedRequest, GetLatestFeedResponse>
+    public class GetLatestFeedHandler : IRequestHandler<GetLatestFeedRequest, List<FeedItem>>
     {
         private readonly IPostService _postService;
         private readonly IRepostRepository _repostRepository;
@@ -18,7 +18,7 @@ namespace Posting.Infrastructure.Handlers.Posts
             _repostRepository = repostRepository;
         }
 
-        public async Task<GetLatestFeedResponse> Handle(GetLatestFeedRequest request, CancellationToken cancellationToken)
+        public async Task<List<FeedItem>> Handle(GetLatestFeedRequest request, CancellationToken cancellationToken)
         {
             var feedItems = new List<FeedItem>();
 
@@ -37,10 +37,7 @@ namespace Posting.Infrastructure.Handlers.Posts
             // to make sure our list is going to be accurate.
             feedItems.OrderByDescending(x => x.PostDate).ThenByDescending(x => x.RepostDate);
 
-            return new GetLatestFeedResponse()
-            {
-                FeedItems = feedItems,
-            };
+            return feedItems;
         }
     }
 }

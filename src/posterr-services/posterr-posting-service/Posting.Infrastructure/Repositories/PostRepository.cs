@@ -19,6 +19,11 @@ namespace Posting.Infrastructure.Repositories
             _connection = dbConnection;
         }
 
+        public async Task<Post?> GetPostById(int postId)
+        {
+            return await _context.Posts.FirstOrDefaultAsync(x => x.PostId == postId);
+        }
+
         public async Task<IEnumerable<PostThumbnail>> GetLatestPosts(int take, int skip)
         {
             // Just a heads up, we are not passing the cancellation token here for two reasons.
@@ -56,6 +61,12 @@ namespace Posting.Infrastructure.Repositories
         public async Task<bool> CreatePost(Post request, CancellationToken cancellationToken)
         {
             var response = await _context.Posts.AddAsync(request);
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public async Task<bool> UpdatePost(Post post, CancellationToken cancellationToken)
+        {
+            _context.Posts.Update(post);
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
     }

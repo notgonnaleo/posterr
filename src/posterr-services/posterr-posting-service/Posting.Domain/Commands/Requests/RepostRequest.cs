@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace Posting.Domain.Commands.Requests
 {
-    public class RepostRequest
+    public class RepostRequest : IRequest<RepostResponse>
     {
         public int UserId { get; set; }
-        public string PostId { get; set; }
+        public int PostId { get; set; }
+        public bool IsReposting { get; set; } = true;
     }
 }

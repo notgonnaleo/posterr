@@ -18,10 +18,11 @@ namespace Posting.Infrastructure.Repositories
             _connection = dbConnection;
         }
 
-        public async Task<bool> CreateRepost(Repost request, CancellationToken cancellationToken)
+        public async Task<int> CreateRepost(Repost request, CancellationToken cancellationToken)
         {
             _context.Reposts.Add(request);
-            return await _context.SaveChangesAsync(cancellationToken) > 0;
+            await _context.SaveChangesAsync(cancellationToken);
+            return request.RepostId;
         }
 
         public async Task<IEnumerable<RepostThumbnail>> GetLatestReposts(int take, int skip)
@@ -29,6 +30,12 @@ namespace Posting.Infrastructure.Repositories
             var sql = new GetLatestRepostsQuery(take, skip);
             var response = await _connection.QueryAsync<RepostThumbnail>(sql.Query, sql.Parameters);
             return response;
+        }
+
+        public async Task<bool> UpdateRepost(Repost request, CancellationToken cancellationToken)
+        {
+            _context.Reposts.Update(request);
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
     }
 }

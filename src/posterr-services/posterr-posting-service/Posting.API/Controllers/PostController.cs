@@ -23,9 +23,9 @@ namespace Posterr.API.Controllers
         {
             try
             {
-                var request = new GetLatestFeedRequest();
+                var request = new GetLatestFeedRequest(take, skip);
                 var response = await _mediator.Send(request);
-                return Ok(response.FeedItems);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -39,7 +39,7 @@ namespace Posterr.API.Controllers
         {
             try
             {
-                var request = new GetTrendingFeedRequest();
+                var request = new GetTrendingFeedRequest(take, skip);
                 var response = await _mediator.Send(request);
                 return Ok(response.FeedItems);
             }
@@ -53,14 +53,16 @@ namespace Posterr.API.Controllers
         [Route("new")]
         public async Task<ActionResult<bool>> CreatePost(CreatePostRequest request)
         {
-            return Ok();
+            var response = await _mediator.Send(request);
+            return Ok(response);
         }
 
         [HttpPost]
         [Route("repost")]
-        public async Task<ActionResult<bool>> Repost(int postId, int userId)
+        public async Task<ActionResult<bool>> Repost(RepostRequest request)
         {
-            return Ok();
+            var response = await _mediator.Send(request);
+            return Ok(response);
         }
     }
 }

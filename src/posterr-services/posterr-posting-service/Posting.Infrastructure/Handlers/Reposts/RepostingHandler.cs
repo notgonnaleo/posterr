@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using Posting.Domain.Commands.Requests;
+using Posting.Domain.Entities;
 using Posting.Domain.Interfaces.Repositories;
 using Posting.Domain.Interfaces.Services;
 using Posting.Domain.Models;
@@ -7,38 +9,59 @@ using Posting.Domain.Queries.Responses;
 
 namespace Posting.Infrastructure.Handlers.Reposts
 {
-    public class RepostingHandler : IRequestHandler<GetLatestFeedRequest, GetLatestFeedResponse>
+    public class RepostingHandler : IRequestHandler<RepostRequest, RepostResponse>
     {
-        private readonly IPostService _postService;
         private readonly IRepostRepository _repostRepository;
+        private readonly IPostService _postService;
 
-        public RepostingHandler(IRepostRepository repostRepository)
+
+        public RepostingHandler(IRepostRepository repostRepository, IPostService postService)
         {
             _repostRepository = repostRepository;
+            _postService = postService;
         }
 
-        public async Task<GetLatestFeedResponse> Handle(GetLatestFeedRequest request, CancellationToken cancellationToken)
+        public async Task<RepostResponse> Handle(RepostRequest request, CancellationToken cancellationToken)
         {
-            var feedItems = new List<FeedItem>();
+            int? repostLogId = null; 
+            bool Reposted = false;
 
-            var latestPosts = await _postService.GetLatestPosts(request.Take, request.Skip);
-            var latestReposts = await _repostRepository.GetLatestReposts(request.Take, request.Skip);
-
-            if (latestPosts != null && latestPosts.Any() && latestReposts != null && latestReposts.Any())
+            var post = await _postService.GetPostById(request.PostId);            
+            if(post is null)
             {
-                var mappedPostToFeedItem = latestPosts.Select(feedItem => new FeedItem(feedItem));
-                var mappedRepostToFeedItem = latestReposts.Select(feedItem => new FeedItem(feedItem));
-                feedItems.AddRange(mappedPostToFeedItem);
-                feedItems.AddRange(mappedRepostToFeedItem);
+                // throw exception
+                return new RepostResponse();
+            }
+            
+            if (request.IsReposting) // Save the repost action on database
+            {
+                post.TotalReposts++;
+                repostLogId = await _repostRepository.CreateRepost(new Repost()
+                {
+                    ParentPostId = request.PostId,
+                    RepostUserId = request.UserId,
+                    RepostDate = DateTime.UtcNow,
+                }, cancellationToken);
+                Reposted = true;
+            }
+            else 
+            // Undo the repost logic and we will only do that
+            // in case the post total repost amount is more than zero
+            // since we can't un-repost something that was never reposted before.
+            {
+                if (post.TotalReposts > 0)
+                {
+                    post.TotalReposts--;
+                    await _postService.UpdatePost(post, cancellationToken);
+                }
+                Reposted = false;
             }
 
-            // Re-ordering from the latest to oldest posts & reposts
-            // to make sure our list is going to be accurate.
-            feedItems.OrderByDescending(x => x.PostDate).ThenByDescending(x => x.RepostDate);
-
-            return new GetLatestFeedResponse()
+            return new RepostResponse()
             {
-                FeedItems = feedItems,
+                PostId = post.PostId, // I'd rather use the database result instead the execution-time parameter for this case.
+                RepostId = repostLogId,
+                Reposted = Reposted,
             };
         }
     }
