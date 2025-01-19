@@ -1,10 +1,16 @@
 import { Box } from "@mui/material";
 import FeedFilter from "../Filter/FeedFilter";
+import { FilterOptions } from "../../models/Post";
 
-const Header = () => {
+interface Params {
+    selectedFilterOption: FilterOptions;
+    setFilterOption: React.Dispatch<React.SetStateAction<FilterOptions>>;
+}
+
+const Header = ({ selectedFilterOption, setFilterOption  }: Params) => {
     return (
         <Box>
-            <FeedFilter />
+            <FeedFilter selectedFilterOption={selectedFilterOption} setFilterOption={setFilterOption} />
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <Box
                     sx={{

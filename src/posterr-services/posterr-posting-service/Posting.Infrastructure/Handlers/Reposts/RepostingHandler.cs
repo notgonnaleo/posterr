@@ -5,16 +5,15 @@ using Posting.Domain.Models;
 using Posting.Domain.Queries.Requests;
 using Posting.Domain.Queries.Responses;
 
-namespace Posting.Infrastructure.Handlers.Posts
+namespace Posting.Infrastructure.Handlers.Reposts
 {
-    public class GetLatestFeedHandler : IRequestHandler<GetLatestFeedRequest, GetLatestFeedResponse>
+    public class RepostingHandler : IRequestHandler<GetLatestFeedRequest, GetLatestFeedResponse>
     {
         private readonly IPostService _postService;
         private readonly IRepostRepository _repostRepository;
 
-        public GetLatestFeedHandler(IPostService postService, IRepostRepository repostRepository)
+        public RepostingHandler(IRepostRepository repostRepository)
         {
-            _postService = postService;
             _repostRepository = repostRepository;
         }
 

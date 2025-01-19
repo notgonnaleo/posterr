@@ -2,7 +2,7 @@
 
 namespace Posting.Domain.Queries.Requests
 {
-    public class GetLatestFeedResponse
+    public class GetTrendingFeedResponse
     {
         public IEnumerable<FeedItem> FeedItems { get; set; }
     }

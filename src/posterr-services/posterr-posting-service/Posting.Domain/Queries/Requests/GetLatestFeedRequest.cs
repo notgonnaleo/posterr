@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Posting.Domain.Queries.Responses;
 
 namespace Posting.Domain.Queries.Requests
 {

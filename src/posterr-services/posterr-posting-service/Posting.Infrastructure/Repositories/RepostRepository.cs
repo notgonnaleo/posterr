@@ -18,9 +18,10 @@ namespace Posting.Infrastructure.Repositories
             _connection = dbConnection;
         }
 
-        public Task<bool> CreateRepost(Repost request)
+        public async Task<bool> CreateRepost(Repost request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _context.Reposts.Add(request);
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
         public async Task<IEnumerable<RepostThumbnail>> GetLatestReposts(int take, int skip)

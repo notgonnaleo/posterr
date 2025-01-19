@@ -33,9 +33,32 @@ namespace Posterr.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("trending")]
+        public async Task<ActionResult<IEnumerable<FeedItem>>> GetTrendingFeed(int take, int skip)
+        {
+            try
+            {
+                var request = new GetTrendingFeedRequest();
+                var response = await _mediator.Send(request);
+                return Ok(response.FeedItems);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         [Route("new")]
         public async Task<ActionResult<bool>> CreatePost(CreatePostRequest request)
+        {
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("repost")]
+        public async Task<ActionResult<bool>> Repost(int postId, int userId)
         {
             return Ok();
         }

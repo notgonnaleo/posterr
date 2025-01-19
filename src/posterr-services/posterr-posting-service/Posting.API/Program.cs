@@ -38,14 +38,12 @@ namespace Posting.API
             // (Inversion of Control Concept, "I" of the SOLID Concepts)
             builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IPostService, PostService>();
-
             builder.Services.AddScoped<IRepostRepository, RepostRepository>();
-
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             // Setting up and injecting our MediatR service, so we can actually use our handlers through the controllers.
             // Similar to the usual interface and concrete classes injection, but with handlers.
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetLatestFeedHandler).Assembly));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetTrendingFeedHandler).Assembly));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

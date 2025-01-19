@@ -12,7 +12,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   flexDirection: 'column',
   padding: 0,
   margin: '0 auto',
-  width: '90%',
+  width: '60%',
   height: '100%',
   backgroundColor: theme.palette.background.paper,
   '&:hover': {

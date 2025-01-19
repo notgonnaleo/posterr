@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Box, TextareaAutosize, styled, FormControl } from '@mui/material';
 import { gray } from '../../theme/themePrimitives';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import SendIcon from '@mui/icons-material/Send';
 
 const CreatePostSection = () => {
   const [postContent, setPostContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPostContent(event.target.value);
-  };
 
   const TextAreaPost = styled(TextareaAutosize)(({ theme }) => ({
     display: 'flex',
@@ -51,7 +47,7 @@ const CreatePostSection = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', padding: 2 }}>
+    <Box sx={{ maxWidth: '100%', mx: 'auto', padding: 2 }}>
         <FormControl sx={{ width: '100%' }} variant="outlined">
             <TextAreaPost placeholder="What's up?" sx={{margin: '4px'}}/>
         </FormControl>
@@ -63,18 +59,11 @@ const CreatePostSection = () => {
                     onClick={handleSubmit}
                     disabled={isSubmitting}
                     >
-                    {isSubmitting ? 'Posting...' : 'Post'}
+                    {isSubmitting ? 'Posting...' : <SendIcon fontSize='medium'/>}
                 </Button>
             </Box>
             <Box sx={{margin: '3px'}}>
-            <Button
-                variant="contained"
-                color="primary"
-                sx={{ minWidth: 'auto', padding: 1 }}
-            >
-                <EmojiEmotionsIcon />
-            </Button>
-            </Box>
+          </Box>
         </Box>
     </Box>
   );

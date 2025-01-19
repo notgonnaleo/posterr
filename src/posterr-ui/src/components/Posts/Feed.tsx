@@ -3,21 +3,33 @@ import PostCard from "./PostCard";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import PostFactory from "../../factories/PostFactory";
-import FeedItem from "../../models/Post";
+import FeedItem, { FilterOptions } from "../../models/Post";
 
-const Feed = () => {
+interface Params {
+  filterOptions: FilterOptions
+}
+
+const Feed = ({ filterOptions }: Params)=> {
   const [postList, setPostList] = useState<FeedItem[]>([]);
 
   useEffect(() => {
     getPostsList();
   }, []);
 
+  useEffect(() => {
+    getPostsList();
+  }, [filterOptions]);
+
   const getPostsList = async () => {
-    const posts = await PostFactory.getPosts();
+    let posts: FeedItem[] = [];
+    if(filterOptions === FilterOptions.Latest) {
+      posts = await PostFactory.getLatestPosts();
+    } else if (filterOptions === FilterOptions.Trending) {
+      posts = await PostFactory.getTrendingPosts();
+    }
     setPostList(posts);
   }
 
-  // PROBLEM HERE, NEED TO FIX ASAP
   return (
     postList.length > 0 ? (
     <Grid container spacing={2} columns={1}>

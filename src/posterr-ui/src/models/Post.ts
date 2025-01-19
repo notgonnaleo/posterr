@@ -1,10 +1,3 @@
-// export default interface Post {
-//     img: string;
-//     tag: string;
-//     title: string;
-//     description: string;
-// }
-
 export default interface FeedItem {
     postId: number;
     postContent: string;
@@ -15,4 +8,9 @@ export default interface FeedItem {
     repostUserId?: number | null;
     repostUsername?: string | null;
     repostDate?: Date | null;
+}
+
+export enum FilterOptions {
+    Latest = 0,
+    Trending = 1,
 }

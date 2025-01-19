@@ -5,6 +5,7 @@ using System.Data;
 using Dapper;
 using Posting.Domain.Models;
 using Posting.Infrastructure.SqlQueries;
+using Microsoft.EntityFrameworkCore;
 
 namespace Posting.Infrastructure.Repositories
 {
@@ -27,6 +28,29 @@ namespace Posting.Infrastructure.Repositories
             var sql = new GetLatestPostsQuery(take, skip);
             var response = await _connection.QueryAsync<PostThumbnail>(sql.Query, sql.Parameters);
             return response;
+        }
+
+        public async Task<IEnumerable<PostThumbnail>> GetPostThumbnails(int take, int skip)
+        {
+            return await _context.Posts
+                .Join(
+                    _context.Users,
+                    post => post.UserId,
+                    user => user.UserId,
+                    (post, user) => new { Post = post, User = user }
+                )
+                .Skip(skip) 
+                .Take(take)
+                .Select(x => new PostThumbnail
+                {
+                    PostId = x.Post.PostId,
+                    PostContent = x.Post.PostContent,
+                    TotalReposts = x.Post.TotalReposts,
+                    DateCreated = x.Post.DateCreated,
+                    UserId = x.Post.UserId,
+                    Username = x.User.Username
+                })
+                .ToListAsync();
         }
 
         public async Task<bool> CreatePost(Post request, CancellationToken cancellationToken)
