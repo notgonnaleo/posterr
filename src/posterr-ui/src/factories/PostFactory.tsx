@@ -5,18 +5,25 @@ import { endpoint } from "../utils/environments";
 const controller = `${endpoint}/api/posting`;
 
 const PostFactory = {
-    getLatestPosts: async (): Promise<FeedItem[]> => {
-        const response = await axios.get<FeedItem[]>(`${controller}/latest`)
+    getLatestPosts: async (take: number, skip: number): Promise<FeedItem[]> => {
+        const response = await axios.get<FeedItem[]>(`${controller}/latest?take=${take}&skip=${skip}`)
         return response.data;
     },
-    getTrendingPosts: async (): Promise<FeedItem[]> => {
-        const response = await axios.get<FeedItem[]>(`${controller}/trending`)
+    getTrendingPosts: async (take: number, skip: number): Promise<FeedItem[]> => {
+        const response = await axios.get<FeedItem[]>(`${controller}/trending?take=${take}&skip=${skip}`)
+        return response.data;
+    },
+    New: async (authorId: number, content: string): Promise<boolean> =>{
+        const response = await axios.post<boolean>(`${controller}/new`, {
+            AuthorId: authorId,
+            PostContent: content,
+        })
         return response.data;
     },
     Repost: async (postId: number, userId: number): Promise<boolean> => {
         const response = await axios.post<boolean>(`${controller}/repost`, {
             PostId: postId,
-            UserId: userId
+            UserId: userId,
         })
         return response.data;
     }

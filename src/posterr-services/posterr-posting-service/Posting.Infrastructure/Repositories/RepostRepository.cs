@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using Posting.Domain.Entities;
 using Posting.Domain.Interfaces.Repositories;
 using Posting.Domain.Models;

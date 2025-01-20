@@ -21,16 +21,21 @@ namespace Posterr.API.Controllers
         [Route("latest")]
         public async Task<ActionResult<IEnumerable<FeedItem>>> GeLatestFeed(int take, int skip)
         {
-            var request = new GetLatestFeedRequest(take, skip);
+            var request = new GetLatestFeedRequest();
+            request.Skip = skip <= 0 ? 0 : skip;
+            request.Take = take <= 0 ? 0 : take;
             var response = await _mediator.Send(request);
             return Ok(response);    
         }
 
+        // Add more logic to pagination at both methods (TotalCount parameter)
         [HttpGet]
         [Route("trending")]
         public async Task<ActionResult<IEnumerable<FeedItem>>> GetTrendingFeed(int take, int skip)
         {
-            var request = new GetTrendingFeedRequest(take, skip);
+            var request = new GetTrendingFeedRequest();
+            request.Skip = skip <= 0 ? 0 : skip;
+            request.Take = take <= 0 ? 0 : take;
             var response = await _mediator.Send(request);
             return Ok(response);
         }

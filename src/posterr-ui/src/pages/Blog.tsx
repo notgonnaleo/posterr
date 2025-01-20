@@ -23,7 +23,6 @@ export default function Blog(props: { disableCustomTheme?: boolean }) {
           }}
         >
           <MainContent />
-          {/* <Latest /> */}
         </Container>
       <Footer />
     </AppTheme>

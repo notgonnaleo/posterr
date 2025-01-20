@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import { styled, Card, CardContent, Typography, IconButton, Box } from "@mui/material";
+import React from "react";
+import { styled, Card, CardContent, Typography, IconButton, Box, Button } from "@mui/material";
 import RepeatIcon from '@mui/icons-material/Repeat';
 import FeedItem from "../../models/Post";
+import PostFactory from "../../factories/PostFactory";
+import { useNavigate } from "react-router-dom";
 
 interface Params {
     data: FeedItem
+    userId: number
 }
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -45,19 +48,34 @@ const StyledTypography = styled(Typography)({
   textOverflow: 'ellipsis',
 });
 
-const PostCard: React.FC<Params> = ({ data }) => {
-  const [focusedCardIndex, setFocusedCardIndex] = useState<number | null>(null);
+const PostCard: React.FC<Params> = ({ data, userId }) => {
+  const navigate = useNavigate();
 
-  const handleFocus = () => setFocusedCardIndex(0);
-  const handleBlur = () => setFocusedCardIndex(null);
+  const clickRepost = async () => {
+    try {
+      // I already have a composite key validation for this on the server-side but
+      // im adding another one here because i won't need to waste time and resource calling the api
+      // and database and even if the user forces it he wont be able to achieve his goal.
+      if(userId == data.authorId) {
+        alert("You cannot repost your own posts")
+        return;
+      };
+
+      const response = await PostFactory.Repost(data.postId, userId);
+      if (response) {
+        navigate('/');
+      } else {
+        alert("Error");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <StyledCard
       variant="outlined"
-      onFocus={handleFocus}
-      onBlur={handleBlur}
       tabIndex={0}
-      className={focusedCardIndex === 0 ? 'Mui-focused' : ''}
     >
       <StyledCardContent>
         {/* TODO: Come back here and make better styles for this  */}
@@ -78,14 +96,19 @@ const PostCard: React.FC<Params> = ({ data }) => {
         </StyledTypography>
         
         <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 'auto' }}>
-          <Box>
-            <IconButton sx={{margin: '4px'}} color="primary">
+          <Button onClick={() => {clickRepost()}}>
+            <IconButton 
+              sx={{ 
+                margin: '4px', 
+                color: data.repostUserId != null && data.repostUserId === userId ? 'blue' : 'primary.main',
+              }} 
+              color="primary"            >
               <RepeatIcon />
               <Typography variant="inherit" sx={{fontSize: '14px', padding: '2px'}}>
                 {data.totalReposts}
               </Typography>
             </IconButton>
-          </Box>
+          </Button>
         </Box>
       </StyledCardContent>
     </StyledCard>

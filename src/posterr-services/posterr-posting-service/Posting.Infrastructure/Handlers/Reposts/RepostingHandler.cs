@@ -42,7 +42,9 @@ namespace Posting.Infrastructure.Handlers.Reposts
                 throw new Exception("You cannot repost your own posts.");
             }
 
-            if (request.IsReposting) // Save the repost action on database
+            // I did implement a un-redo repost logic but it's not going to be used on this 
+            // case, but if we wanted to do so, just remove the hard-coded true from line 47
+            if (request.IsReposting && true) // Save the repost action on database
             {
                 post.TotalReposts++;
                 repostLogId = await _repostRepository.CreateRepost(new Repost()
