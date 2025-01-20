@@ -100,7 +100,7 @@ const PostCard: React.FC<Params> = ({ data, userId }) => {
             <IconButton 
               sx={{ 
                 margin: '4px', 
-                color: data.repostUserId != null && data.repostUserId === userId ? 'blue' : 'primary.main',
+                color: data.repostUserId === userId ? 'blue' : 'primary.main',
               }} 
               color="primary"            >
               <RepeatIcon />

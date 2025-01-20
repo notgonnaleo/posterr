@@ -4,11 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using Posting.API.Middlewares;
 using Posting.Domain.Interfaces.Repositories;
-using Posting.Domain.Interfaces.Services;
 using Posting.Infrastructure.Contexts;
 using Posting.Infrastructure.Handlers.Posts;
 using Posting.Infrastructure.Repositories;
-using Posting.Infrastructure.Services;
 using System.Data;
 using System.Data.Common;
 
@@ -38,7 +36,6 @@ namespace Posting.API
             // Injecting our interfaces and concrete class services to be used with DI
             // (Inversion of Control Concept, "I" of the SOLID Concepts)
             builder.Services.AddScoped<IPostRepository, PostRepository>();
-            builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<IRepostRepository, RepostRepository>();
 
             // Setting up and injecting our MediatR service, so we can actually use our handlers through the controllers.

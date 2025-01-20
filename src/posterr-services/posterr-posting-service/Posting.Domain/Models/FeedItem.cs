@@ -7,7 +7,7 @@
         public int TotalReposts { get; set; }
         public DateTime DateCreated { get; set; }
         public int PostUserId { get; set; }
-        public string PostUsername { get; set; } = string.Empty;
+        public string PostUsername { get; set; }
         public int RepostId { get; set; }
         public int RepostUserId { get; set; }
         public string RepostUsername { get; set; } = string.Empty;

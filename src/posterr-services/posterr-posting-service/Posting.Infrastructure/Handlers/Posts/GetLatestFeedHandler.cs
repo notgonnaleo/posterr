@@ -1,9 +1,7 @@
 ﻿using MediatR;
 using Posting.Domain.Interfaces.Repositories;
-using Posting.Domain.Interfaces.Services;
 using Posting.Domain.Models;
 using Posting.Domain.Queries.Requests;
-using Posting.Domain.Queries.Responses;
 
 namespace Posting.Infrastructure.Handlers.Posts
 {

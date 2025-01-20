@@ -31,6 +31,10 @@ const PostFactory = {
     });
     return response.data;
   },
+  Keyword: async (keyword: string): Promise<FeedItem[]> => {
+    const response = await axios.get<FeedItem[]>(`${controller}/Keyword?keyword`);
+    return response.data;
+  },
 };
 
 export default PostFactory;

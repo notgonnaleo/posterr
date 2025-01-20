@@ -5,16 +5,17 @@ using Posting.Domain.Queries.Requests;
 
 namespace Posting.Infrastructure.Handlers.Posts
 {
-    public class GetTrendingFeedHandler : IRequestHandler<GetTrendingFeedRequest, GetTrendingFeedResponse>
+    public class GetTrendingFeedHandler : IRequestHandler<GetTrendingFeedRequest, IEnumerable<FeedItem>>
     {
         private readonly IPostRepository _postRepository;
         public GetTrendingFeedHandler(IPostRepository postRepository)
         {
             _postRepository = postRepository;
         }
-        public async Task<GetTrendingFeedResponse> Handle(GetTrendingFeedRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<FeedItem>> Handle(GetTrendingFeedRequest request, CancellationToken cancellationToken)
         {
-            return new GetTrendingFeedResponse();
+            var trendingPosts = await _postRepository.GetTrendingFeed(request.Take, request.Skip);
+            return trendingPosts;
         }
     }
 }

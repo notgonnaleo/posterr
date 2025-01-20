@@ -31,6 +31,13 @@ namespace Posting.Infrastructure.Repositories
             return response;
         }
 
+        public async Task<IEnumerable<FeedItem>> GetTrendingFeed(int take, int skip)
+        {
+            var sql = new GetTrendingFeedQuery(take, skip);
+            var response = await _connection.QueryAsync<FeedItem>(sql.Query, sql.Parameters);
+            return response;
+        }
+
         public async Task<bool> CreatePost(Post request, CancellationToken cancellationToken)
         {
             var response = await _context.Posts.AddAsync(request);

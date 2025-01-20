@@ -2,23 +2,21 @@
 using Posting.Domain.Commands.Requests;
 using Posting.Domain.Entities;
 using Posting.Domain.Interfaces.Repositories;
-using Posting.Domain.Interfaces.Services;
 using Posting.Domain.Models;
 using Posting.Domain.Queries.Requests;
-using Posting.Domain.Queries.Responses;
 
 namespace Posting.Infrastructure.Handlers.Reposts
 {
     public class RepostingHandler : IRequestHandler<RepostRequest, RepostResponse>
     {
         private readonly IRepostRepository _repostRepository;
-        private readonly IPostService _postService;
+        private readonly IPostRepository _postRepository;
 
 
-        public RepostingHandler(IRepostRepository repostRepository, IPostService postService)
+        public RepostingHandler(IRepostRepository repostRepository, IPostRepository postRepository)
         {
             _repostRepository = repostRepository;
-            _postService = postService;
+            _postRepository = postRepository;
         }
 
         public async Task<RepostResponse> Handle(RepostRequest request, CancellationToken cancellationToken)
@@ -31,7 +29,7 @@ namespace Posting.Infrastructure.Handlers.Reposts
             int? repostLogId = null; 
             bool Reposted = false;
 
-            var post = await _postService.GetPostById(request.PostId);            
+            var post = await _postRepository.GetPostById(request.PostId);            
             if(post is null)
             {
                 throw new KeyNotFoundException("The post you're trying to repost does not exist or is deleted.");
@@ -63,7 +61,7 @@ namespace Posting.Infrastructure.Handlers.Reposts
                 if (post.TotalReposts > 0)
                 {
                     post.TotalReposts--;
-                    await _postService.UpdatePost(post, cancellationToken);
+                    await _postRepository.UpdatePost(post, cancellationToken);
                 }
                 Reposted = false;
             }
