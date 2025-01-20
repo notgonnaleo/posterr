@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Posting.Domain.Commands.Requests;
 using Posting.Domain.Models;
 using Posting.Domain.Queries.Requests;
+using Posting.Domain.Queries.Responses;
 
 namespace Posterr.API.Controllers
 {
@@ -19,7 +20,7 @@ namespace Posterr.API.Controllers
 
         [HttpGet]
         [Route("latest")]
-        public async Task<ActionResult<IEnumerable<FeedItem>>> GeLatestFeed(int take, int skip)
+        public async Task<ActionResult<GetLatestFeedResponse>> GeLatestFeed(int take, int skip)
         {
             var request = new GetLatestFeedRequest();
             request.Skip = skip <= 0 ? 0 : skip;
@@ -28,10 +29,9 @@ namespace Posterr.API.Controllers
             return Ok(response);    
         }
 
-        // Add more logic to pagination at both methods (TotalCount parameter)
         [HttpGet]
         [Route("trending")]
-        public async Task<ActionResult<IEnumerable<FeedItem>>> GetTrendingFeed(int take, int skip)
+        public async Task<ActionResult<GetTrendingFeedResponse>> GetTrendingFeed(int take, int skip)
         {
             var request = new GetTrendingFeedRequest();
             request.Skip = skip <= 0 ? 0 : skip;

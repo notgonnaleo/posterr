@@ -20,8 +20,6 @@ namespace Posting.Infrastructure.Services
 
         public async Task<IEnumerable<PostThumbnail>> GetLatestPosts(int take, int skip)
         {
-            take = take <= 0 ? 0 : take;
-            skip = skip <= 0 ? 0 : skip;
             var response = await _postRepository.GetLatestPosts(take, skip);
             return response;
         }

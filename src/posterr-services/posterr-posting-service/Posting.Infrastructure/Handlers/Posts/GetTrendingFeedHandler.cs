@@ -5,27 +5,45 @@ using Posting.Domain.Queries.Requests;
 
 namespace Posting.Infrastructure.Handlers.Posts
 {
-    public class GetTrendingFeedHandler : IRequestHandler<GetTrendingFeedRequest, IEnumerable<FeedItem>>
+    public class GetTrendingFeedHandler : IRequestHandler<GetTrendingFeedRequest, GetTrendingFeedResponse>
     {
         private readonly IPostRepository _postRepository;
         public GetTrendingFeedHandler(IPostRepository postRepository)
         {
             _postRepository = postRepository;
         }
-        public async Task<IEnumerable<FeedItem>> Handle(GetTrendingFeedRequest request, CancellationToken cancellationToken)
+        public async Task<GetTrendingFeedResponse> Handle(GetTrendingFeedRequest request, CancellationToken cancellationToken)
         {
             var feedItems = new List<FeedItem>();
             var postThumbnails = await _postRepository.GetPostThumbnails(request.Take, request.Skip);
 
             // If we don't have anything posted yet, let's just return an empty list
             // the UI will know what it must do when this happens, it shouldn't be a problem.
-            if(!postThumbnails.Any())
+            if (!postThumbnails.Any())
             {
-                return feedItems;
+                return new GetTrendingFeedResponse() 
+                {
+                    FeedItems = feedItems,
+                    Pagination = new Pagination()
+                };
             }
 
-            var mappedFeedItemsByAscendingTotalReposts = postThumbnails.Select(post => new FeedItem(post)).OrderBy(x => x.TotalReposts);
-            return mappedFeedItemsByAscendingTotalReposts;
+            var firstItemTotalRowCounting = postThumbnails.FirstOrDefault();
+            var totalRowCount = firstItemTotalRowCounting != null ? firstItemTotalRowCounting.TotalRowCount : 20;
+
+            var mappedFeedItemsByAscendingTotalReposts = postThumbnails.Select(post => new FeedItem(post));
+            var result = mappedFeedItemsByAscendingTotalReposts.OrderByDescending(x => x.TotalReposts).ToList();
+
+            return new GetTrendingFeedResponse() 
+            {
+                FeedItems = result,
+                Pagination = new Pagination()
+                {
+                    Take = request.Take,
+                    Skip = request.Skip,
+                    TotalRowCount = totalRowCount
+                }
+            };
         }
     }
 }

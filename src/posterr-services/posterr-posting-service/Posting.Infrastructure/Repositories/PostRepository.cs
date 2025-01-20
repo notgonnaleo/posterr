@@ -53,7 +53,8 @@ namespace Posting.Infrastructure.Repositories
                     TotalReposts = x.Post.TotalReposts,
                     DateCreated = x.Post.DateCreated,
                     UserId = x.Post.UserId,
-                    Username = x.User.Username
+                    Username = x.User.Username,
+                    TotalRowCount = _context.Posts.Count() 
                 })
                 .ToListAsync();
         }

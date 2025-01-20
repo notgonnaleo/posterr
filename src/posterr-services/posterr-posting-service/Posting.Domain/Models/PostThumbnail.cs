@@ -6,8 +6,9 @@
         public string PostContent { get; set; }
         public int TotalReposts { get; set; }
         public DateTime DateCreated { get; set; }
-
         public int UserId { get; set; }
         public string Username { get; set; }
+        public RepostThumbnail? Repost { get; set; }
+        public int TotalRowCount { get; set; }
     }
 }

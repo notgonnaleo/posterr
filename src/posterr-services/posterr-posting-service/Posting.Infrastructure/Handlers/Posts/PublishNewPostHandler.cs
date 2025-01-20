@@ -24,7 +24,7 @@ namespace Posting.Infrastructure.Handlers.Posts
             var authorPosts = await _postService.GetPostsByUserId(request.AuthorId);
             if(authorPosts is not null) 
             {
-                var latestPosts = authorPosts.Select(x => x.DateCreated.Date.Day == DateTime.UtcNow.Day);
+                var latestPosts = authorPosts.Where(x => x.DateCreated.Day == DateTime.UtcNow.Day);
                 if (latestPosts.Count() > 5)
                 {
                     throw new Exception("You cannot publish more posts than you already have (5 posts per day)");

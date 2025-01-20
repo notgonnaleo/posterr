@@ -1,3 +1,5 @@
+import Pagination from "./Pagination";
+
 export default interface FeedItem {
     postId: number;
     postContent: string;
@@ -10,7 +12,13 @@ export default interface FeedItem {
     repostDate?: Date | null;
 }
 
+export default interface FeedResponse {
+    feedItems : FeedItem[],
+    pagination: Pagination
+}
+
 export enum FilterOptions {
     Latest = 0,
     Trending = 1,
 }
+

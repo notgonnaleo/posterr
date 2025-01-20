@@ -28,7 +28,7 @@ namespace Posting.Infrastructure.Repositories
 
         public async Task<IEnumerable<RepostThumbnail>> GetLatestReposts(int take, int skip)
         {
-            var sql = new GetLatestRepostsQuery(take, skip);
+            var sql = new GetLatestFeedQuery(take, skip);
             var response = await _connection.QueryAsync<RepostThumbnail>(sql.Query, sql.Parameters);
             return response;
         }

@@ -1,4 +1,6 @@
-﻿namespace Posting.Domain.Models
+﻿using Posting.Domain.Entities;
+
+namespace Posting.Domain.Models
 {
     public class FeedItem
     {
@@ -10,9 +12,11 @@
             AuthorId = post.UserId;
             AuthorName = post.Username;
             PostDate = post.DateCreated;
+            RepostId = null;
             RepostUserId = null;
             RepostUsername = null;
             RepostDate = null;
+            TotalRowCount = post.TotalRowCount;
         }
 
         public FeedItem(RepostThumbnail repost) 
@@ -23,9 +27,11 @@
             AuthorId = repost.AuthorId;
             AuthorName = repost.AuthorName;
             PostDate = repost.DateCreated;
+            RepostId = repost.RepostId;
             RepostUserId = repost.RepostUserId;
             RepostUsername = repost.RepostUsername;
             RepostDate = repost.RepostDate;
+            TotalRowCount = repost.TotalRowCount;
         }
 
         public int PostId { get; set; }
@@ -36,8 +42,11 @@
         public string AuthorName { get; set; }
         public DateTime PostDate { get; set; }
 
+        public int? RepostId { get; set; }
         public int? RepostUserId { get; set; }
         public string? RepostUsername { get; set; }
         public DateTime? RepostDate { get; set; }
+
+        public int TotalRowCount { get; set; }
     }
 }

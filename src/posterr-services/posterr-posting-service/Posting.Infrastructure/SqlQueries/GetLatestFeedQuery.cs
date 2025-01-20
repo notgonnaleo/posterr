@@ -1,6 +1,6 @@
 ﻿namespace Posting.Infrastructure.SqlQueries
 {
-    public class GetLatestRepostsQuery : ISqlQueryTemplate
+    public class GetLatestFeedQuery : ISqlQueryTemplate
     {
         /// <summary>
         /// <para>Get all the recent reposts of a parent posting,</para>
@@ -9,7 +9,7 @@
         /// </summary>
         /// <param name="take"></param>
         /// <param name="skip"></param>
-        public GetLatestRepostsQuery(int take, int skip)
+        public GetLatestFeedQuery(int take, int skip)
         {
             Parameters = new
             {
@@ -23,9 +23,11 @@
                     p.""PostContent"",
                     originalAuthor.""UserId"" AS ""AuthorId"",
                     originalAuthor.""Username"" AS ""AuthorName"",
+                    r.""RepostId"",
                     r.""RepostUserId"" AS ""RepostUserId"",
                     repostAuthor.""Username"" AS ""RepostUsername"",
-                    r.""RepostDate""
+                    r.""RepostDate"",
+                    COUNT(*) OVER() AS ""TotalRowCount""
                 FROM 
                     ""Posts"" p
                 JOIN ""Users"" originalAuthor 
