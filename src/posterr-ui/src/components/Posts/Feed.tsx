@@ -22,13 +22,14 @@ const Feed = ({ filterOptions }: Params) => {
   const [pagination, setPagination] = useState<Pagination>({
     take: 3,
     skip: 0,
+    lastCount: -1, 
   });
 
   useEffect(() => {
-    getPostsList();
+    loadMorePosts();
   }, []);
 
-  const getPostsList = async () => {
+  const loadMorePosts = async () => {
     let posts: FeedItem[] = [];
 
     if (filterOptions === FilterOptions.Latest) {
@@ -39,13 +40,10 @@ const Feed = ({ filterOptions }: Params) => {
       posts = response;
     }
     setPostList(postList.concat(posts));
-    loadMorePosts();
-  };
-
-  const loadMorePosts = () => {
     setPagination((prevPagination) => ({
       take: prevPagination.take,
       skip: prevPagination.skip + prevPagination.take, 
+      lastCount: posts.length
     }));
   };
 
@@ -58,14 +56,21 @@ const Feed = ({ filterOptions }: Params) => {
           </Grid>
         ))}
       </Grid>
-      <Box mt={2}>
-        <button onClick={() => {getPostsList()}}>Load More</button>
-      </Box>
+      { pagination.lastCount != 0 && (
+        <Box mt={2}>
+          <button onClick={() => {loadMorePosts()}}>Load More</button>
+        </Box>
+      )}
+
     </div>
   ) : (
-      <Box mt={2}>
-        <button onClick={() => {getPostsList()}}>Load More</button>
-      </Box>
+      <>
+        { pagination.lastCount != 0 && (
+          <Box mt={2}>
+            <button onClick={() => {loadMorePosts()}}>Load More</button>
+          </Box>
+        )}
+      </>
   );
 };
 
