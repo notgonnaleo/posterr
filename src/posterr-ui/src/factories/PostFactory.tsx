@@ -32,7 +32,7 @@ const PostFactory = {
     return response.data;
   },
   Keyword: async (keyword: string): Promise<FeedItem[]> => {
-    const response = await axios.get<FeedItem[]>(`${controller}/Keyword?keyword`);
+    const response = await axios.get<FeedItem[]>(`${controller}/Keyword?keyword=${keyword}`);
     return response.data;
   },
 };
