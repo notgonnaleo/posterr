@@ -54,5 +54,12 @@ namespace Posting.Infrastructure.Repositories
         {
            return await _context.Posts.Where(x => x.UserId == userId).ToListAsync();
         }
+
+        public async Task<IEnumerable<FeedItem>> GetByKeyword(string keyword)
+        {
+            var sql = new GetByKeyword(keyword);
+            var response = await _connection.QueryAsync<FeedItem>(sql.Query, sql.Parameters);
+            return response;
+        }
     }
 }

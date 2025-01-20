@@ -53,13 +53,13 @@ const PostCard: React.FC<Params> = ({ data, userId }) => {
 
   const clickRepost = async () => {
     try {
-      // // I already have a composite key validation for this on the server-side but
-      // // im adding another one here because i won't need to waste time and resource calling the api
-      // // and database and even if the user forces it he wont be able to achieve his goal.
-      // if(userId == data.authorId) {
-      //   alert("You cannot repost your own posts")
-      //   return;
-      // };
+      // I already have a composite key validation for this on the server-side but
+      // im adding another one here because i won't need to waste time and resource calling the api
+      // and database and even if the user forces it he wont be able to achieve his goal.
+      if(userId == data.postUserId) {
+        alert("You cannot repost your own posts")
+        return;
+      };
 
       const response = await PostFactory.Repost(data.postId, userId);
       if (response) {

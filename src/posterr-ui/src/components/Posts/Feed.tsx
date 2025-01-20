@@ -11,12 +11,14 @@ import Pagination from "../../models/Pagination";
 
 interface Params {
   filterOptions: FilterOptions;
+  keyWord: string;
 }
 
-const Feed = ({ filterOptions }: Params) => {
+const Feed = ({ filterOptions, keyWord }: Params) => {
   const mockedUserContext: UserContext = {
     UserId: sampleUserId,
   };
+  const [keywordSearch] = useState<string>(keyWord);
   const [userContext] = useState<UserContext>(mockedUserContext);
   const [postList, setPostList] = useState<FeedItem[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
@@ -31,6 +33,11 @@ const Feed = ({ filterOptions }: Params) => {
 
   const loadMorePosts = async () => {
     let posts: FeedItem[] = [];
+
+    if(keywordSearch != '') {
+      const response = await PostFactory.Keyword(keywordSearch);
+      posts = response;
+    }
 
     if (filterOptions === FilterOptions.Latest) {
       const response = await PostFactory.getLatestPosts(pagination.take, pagination.skip);
@@ -48,7 +55,7 @@ const Feed = ({ filterOptions }: Params) => {
   };
 
   return postList.length > 0 ? (
-    <div>
+    <>
       <Grid container spacing={2} columns={1}>
         {postList.map((data, index) => (
           <Grid size={{ xs: 12, md: 4 }} key={index}>
@@ -61,8 +68,7 @@ const Feed = ({ filterOptions }: Params) => {
           <button onClick={() => {loadMorePosts()}}>Load More</button>
         </Box>
       )}
-
-    </div>
+    </>
   ) : (
       <>
         { pagination.lastCount != 0 && (
