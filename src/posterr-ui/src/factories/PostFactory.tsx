@@ -1,18 +1,18 @@
 import axios from "axios";
 import { endpoint } from "../utils/environments";
-import FeedResponse from "../models/Post";
+import FeedItem from "../models/Post";
 
 const controller = `${endpoint}/api/posting`;
 
 const PostFactory = {
-  getLatestPosts: async (take: number, skip: number): Promise<FeedResponse> => {
-    const response = await axios.get<FeedResponse>(
+  getLatestPosts: async (take: number, skip: number): Promise<FeedItem[]> => {
+    const response = await axios.get<FeedItem[]>(
       `${controller}/latest?take=${take}&skip=${skip}`
     );
     return response.data;
   },
-  getTrendingPosts: async (take: number, skip: number): Promise<FeedResponse> => {
-    const response = await axios.get<FeedResponse>(
+  getTrendingPosts: async (take: number, skip: number): Promise<FeedItem[]> => {
+    const response = await axios.get<FeedItem[]>(
       `${controller}/trending?take=${take}&skip=${skip}`
     );
     return response.data;

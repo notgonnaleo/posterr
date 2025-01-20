@@ -26,13 +26,6 @@ namespace Posting.Infrastructure.Repositories
             return request.RepostId;
         }
 
-        public async Task<IEnumerable<RepostThumbnail>> GetLatestReposts(int take, int skip)
-        {
-            var sql = new GetLatestFeedQuery(take, skip);
-            var response = await _connection.QueryAsync<RepostThumbnail>(sql.Query, sql.Parameters);
-            return response;
-        }
-
         public async Task<bool> UpdateRepost(Repost request, CancellationToken cancellationToken)
         {
             _context.Reposts.Update(request);

@@ -33,7 +33,8 @@
                     ON ru.""UserId"" = r.""RepostUserId""
             ORDER BY 
                 p.""PostId"" DESC,
-                r.""RepostId"" DESC;
+                r.""RepostId"" DESC
+            LIMIT @Take OFFSET @Skip;
             "; 
         }
 

@@ -20,7 +20,7 @@ namespace Posterr.API.Controllers
 
         [HttpGet]
         [Route("latest")]
-        public async Task<ActionResult<GetLatestFeedResponse>> GeLatestFeed(int take, int skip)
+        public async Task<ActionResult<IEnumerable<FeedItem>>> GeLatestFeed(int take, int skip)
         {
             var request = new GetLatestFeedRequest();
             request.Skip = skip <= 0 ? 0 : skip;

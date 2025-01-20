@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid2";
 import PostCard from "./PostCard";
-import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import PostFactory from "../../factories/PostFactory";
 import { FilterOptions } from "../../models/Post";
@@ -19,46 +19,53 @@ const Feed = ({ filterOptions }: Params) => {
   };
   const [userContext] = useState<UserContext>(mockedUserContext);
   const [postList, setPostList] = useState<FeedItem[]>([]);
-  const [pagination] = useState<Pagination>({
+  const [pagination, setPagination] = useState<Pagination>({
     take: 3,
     skip: 0,
-    totalRowCount: 0,
   });
 
   useEffect(() => {
-    getPostsList(pagination.take, pagination.skip);
-  }, [filterOptions]);
+    getPostsList();
+  }, []);
 
-  useEffect(() => {
-    getPostsList(pagination.take, pagination.skip);
-  }, [pagination.skip, pagination.take])
-
-  const getPostsList = async (take: number, skip: number) => {
+  const getPostsList = async () => {
     let posts: FeedItem[] = [];
 
     if (filterOptions === FilterOptions.Latest) {
-      const response = await PostFactory.getLatestPosts(take, skip);
-      posts = response.feedItems;
+      const response = await PostFactory.getLatestPosts(pagination.take, pagination.skip);
+      posts = response;
     } else if (filterOptions === FilterOptions.Trending) {
-      const response = await PostFactory.getTrendingPosts(take, skip);
-      posts = response.feedItems;
+      const response = await PostFactory.getTrendingPosts(pagination.take, pagination.skip);
+      posts = response;
     }
-    setPostList(posts);
+    setPostList(postList.concat(posts));
+    loadMorePosts();
+  };
+
+  const loadMorePosts = () => {
+    setPagination((prevPagination) => ({
+      take: prevPagination.take,
+      skip: prevPagination.skip + prevPagination.take, 
+    }));
   };
 
   return postList.length > 0 ? (
-    <Grid container spacing={2} columns={1}>
-      {postList.map((data, index) => (
-        <Grid
-          size={{ xs: 12, md: 4 }}
-          key={index}
-        >
-          <PostCard data={data} userId={userContext.UserId} />
-        </Grid>
-      ))}
-    </Grid>
+    <div>
+      <Grid container spacing={2} columns={1}>
+        {postList.map((data, index) => (
+          <Grid size={{ xs: 12, md: 4 }} key={index}>
+            <PostCard data={data} userId={userContext.UserId} />
+          </Grid>
+        ))}
+      </Grid>
+      <Box mt={2}>
+        <button onClick={() => {getPostsList()}}>Load More</button>
+      </Box>
+    </div>
   ) : (
-    <Box>No posts for now! You're all updated.</Box>
+      <Box mt={2}>
+        <button onClick={() => {getPostsList()}}>Load More</button>
+      </Box>
   );
 };
 
