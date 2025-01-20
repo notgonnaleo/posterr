@@ -7,8 +7,8 @@ namespace Posting.Domain.Interfaces.Services
     {
         Task<Post?> GetPostById(int postId);
         Task<IEnumerable<Post>?> GetPostsByUserId(int userId);
-        Task<IEnumerable<PostThumbnail>> GetPostThumbnails(int take, int skip);
-        Task<IEnumerable<PostThumbnail>> GetLatestPosts(int take, int skip);
+        Task<IEnumerable<FeedItem>> GetPostThumbnails(int take, int skip);
+        Task<IEnumerable<FeedItem>> GetLatestPosts(int take, int skip);
         Task<bool> CreatePost(Post request, CancellationToken cancellationToken);
         Task<bool> UpdatePost(Post post, CancellationToken cancellationToken);
     }

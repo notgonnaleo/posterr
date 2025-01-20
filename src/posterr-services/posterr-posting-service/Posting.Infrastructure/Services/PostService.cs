@@ -18,7 +18,7 @@ namespace Posting.Infrastructure.Services
             return await _postRepository.CreatePost(request, cancellationToken);
         }
 
-        public async Task<IEnumerable<PostThumbnail>> GetLatestPosts(int take, int skip)
+        public async Task<IEnumerable<FeedItem>> GetLatestPosts(int take, int skip)
         {
             var response = await _postRepository.GetLatestPosts(take, skip);
             return response;
@@ -34,7 +34,7 @@ namespace Posting.Infrastructure.Services
             return await _postRepository.GetPostsByUserId(userId);
         }
 
-        public async Task<IEnumerable<PostThumbnail>> GetPostThumbnails(int take, int skip)
+        public async Task<IEnumerable<FeedItem>> GetPostThumbnails(int take, int skip)
         {
             take = take <= 0 ? 0 : take;
             skip = skip <= 0 ? 0 : skip;

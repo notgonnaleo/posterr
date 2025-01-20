@@ -2,13 +2,6 @@
 {
     public class GetLatestFeedQuery : ISqlQueryTemplate
     {
-        /// <summary>
-        /// <para>Get all the recent reposts of a parent posting,</para>
-        /// <para>We are always linking the intermediary repost to the original post.</para>
-        /// <para>So in this way, all new reposts actions go direct to the parent/original post.</para>
-        /// </summary>
-        /// <param name="take"></param>
-        /// <param name="skip"></param>
         public GetLatestFeedQuery(int take, int skip)
         {
             Parameters = new
@@ -18,31 +11,30 @@
             };
 
             Query = @"
-                SELECT 
-                    p.""PostId"",
-                    p.""PostContent"",
-                    originalAuthor.""UserId"" AS ""AuthorId"",
-                    originalAuthor.""Username"" AS ""AuthorName"",
-                    r.""RepostId"",
-                    r.""RepostUserId"" AS ""RepostUserId"",
-                    repostAuthor.""Username"" AS ""RepostUsername"",
-                    r.""RepostDate"",
-                    COUNT(*) OVER() AS ""TotalRowCount""
-                FROM 
-                    ""Posts"" p
-                JOIN ""Users"" originalAuthor 
-                    ON originalAuthor.""UserId"" = p.""UserId""
-
-                LEFT JOIN ""Reposts"" r
+            SELECT 
+                p.""PostId"", 
+                p.""PostContent"", 
+                p.""TotalReposts"", 
+                p.""DateCreated"", 
+                p.""UserId"" AS ""PostUserId"", 
+                u.""Username"" AS ""PostUsername"", 
+                CASE WHEN r.""RepostId"" IS NULL THEN 0 ELSE 1 END AS ""IsRepost"",
+                r.""RepostId"", 
+                r.""RepostUserId"", 
+                ru.""Username"" AS ""RepostUsername"", 
+                r.""RepostDate""
+            FROM 
+                ""Posts"" p
+                JOIN ""Users"" u 
+                    ON u.""UserId"" = p.""UserId"" 
+                FULL OUTER JOIN ""Reposts"" r
                     ON r.""ParentPostId"" = p.""PostId""
-                JOIN ""Users"" repostAuthor 
-                    ON repostAuthor.""UserId"" = r.""RepostUserId""
-                ORDER BY 
-                    r.""RepostDate""
-                DESC
-                OFFSET @Skip ROWS
-                FETCH NEXT @Take ROWS ONLY
-            ";
+                LEFT JOIN ""Users"" ru 
+                    ON ru.""UserId"" = r.""RepostUserId""
+            ORDER BY 
+                p.""PostId"" DESC,
+                r.""RepostId"" DESC;
+            "; 
         }
 
         public string Query { get; }

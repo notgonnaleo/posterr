@@ -14,7 +14,7 @@ namespace Posting.Infrastructure.Handlers.Posts
         }
         public async Task<GetTrendingFeedResponse> Handle(GetTrendingFeedRequest request, CancellationToken cancellationToken)
         {
-            var feedItems = new List<FeedItem>();
+            var feedItems = new List<FeedItem2>();
             var postThumbnails = await _postRepository.GetPostThumbnails(request.Take, request.Skip);
 
             // If we don't have anything posted yet, let's just return an empty list
@@ -31,7 +31,7 @@ namespace Posting.Infrastructure.Handlers.Posts
             var firstItemTotalRowCounting = postThumbnails.FirstOrDefault();
             var totalRowCount = firstItemTotalRowCounting != null ? firstItemTotalRowCounting.TotalRowCount : 20;
 
-            var mappedFeedItemsByAscendingTotalReposts = postThumbnails.Select(post => new FeedItem(post));
+            var mappedFeedItemsByAscendingTotalReposts = postThumbnails.Select(post => new FeedItem2(post));
             var result = mappedFeedItemsByAscendingTotalReposts.OrderByDescending(x => x.TotalReposts).ToList();
 
             return new GetTrendingFeedResponse() 

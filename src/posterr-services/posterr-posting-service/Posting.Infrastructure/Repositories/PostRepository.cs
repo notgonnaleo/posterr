@@ -24,39 +24,11 @@ namespace Posting.Infrastructure.Repositories
             return await _context.Posts.FirstOrDefaultAsync(x => x.PostId == postId);
         }
 
-        public async Task<IEnumerable<PostThumbnail>> GetLatestPosts(int take, int skip)
+        public async Task<IEnumerable<FeedItem>> GetLatestFeed(int take, int skip)
         {
-            // Just a heads up, we are not passing the cancellation token here for two reasons.
-            // 1. It's not really necessary since this is just a query and not a actual command with update or insert actions
-            // 2. Dapper doesn't have support to cancellation token for QueryAsync method. We could do it using ExecuteAsync or 
-            // any other alternative, but as mentioned before, it's not worth the headache since it's not a high-concern logic method.
-            var sql = new GetLatestPostsQuery(take, skip);
-            var response = await _connection.QueryAsync<PostThumbnail>(sql.Query, sql.Parameters);
+            var sql = new GetLatestFeedQuery(take, skip);
+            var response = await _connection.QueryAsync<FeedItem>(sql.Query, sql.Parameters);
             return response;
-        }
-
-        public async Task<IEnumerable<PostThumbnail>> GetPostThumbnails(int take, int skip)
-        {
-            return await _context.Posts
-                .Join(
-                    _context.Users,
-                    post => post.UserId,
-                    user => user.UserId,
-                    (post, user) => new { Post = post, User = user }
-                )
-                .Skip(skip) 
-                .Take(take)
-                .Select(x => new PostThumbnail
-                {
-                    PostId = x.Post.PostId,
-                    PostContent = x.Post.PostContent,
-                    TotalReposts = x.Post.TotalReposts,
-                    DateCreated = x.Post.DateCreated,
-                    UserId = x.Post.UserId,
-                    Username = x.User.Username,
-                    TotalRowCount = _context.Posts.Count() 
-                })
-                .ToListAsync();
         }
 
         public async Task<bool> CreatePost(Post request, CancellationToken cancellationToken)
