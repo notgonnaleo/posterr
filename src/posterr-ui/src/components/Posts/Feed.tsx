@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid2";
 import PostCard from "./PostCard";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import PostFactory from "../../factories/PostFactory";
 import { FilterOptions } from "../../models/Post";
 import FeedItem from "../../models/Post";
@@ -22,7 +22,7 @@ const Feed = ({ filterOptions, keyWord }: Params) => {
   const [postList, setPostList] = useState<FeedItem[]>([]);
 
   const [pagination, setPagination] = useState<Pagination>({
-    take: 3,
+    take: 15,
     skip: 0,
     lastCount: -1, 
   });
@@ -34,6 +34,16 @@ const Feed = ({ filterOptions, keyWord }: Params) => {
   useEffect(() => {
     loadMorePosts();
   }, [keyWord]);
+
+  useEffect(() => {
+    setPagination({
+      take: 15,
+      skip: 0,
+      lastCount: -1, 
+    });
+    pagination.skip = 0;
+    loadMorePosts();
+  }, [filterOptions]);
 
   const loadMorePosts = async () => {
     let posts: FeedItem[] = [];
@@ -50,13 +60,18 @@ const Feed = ({ filterOptions, keyWord }: Params) => {
       const response = await PostFactory.getTrendingPosts(pagination.take, pagination.skip);
       posts = response;
     }
-    setPostList(postList.concat(posts));
-    setPagination((prevPagination) => ({
-      take: prevPagination.take,
-      skip: prevPagination.skip + prevPagination.take, 
-      lastCount: posts.length
-    }));
-  }
+      if(postList.length > 0) {
+        setPostList(postList.concat(posts));
+      } else {
+        setPostList(posts);
+      }
+
+      setPagination((prevPagination) => ({
+        take: prevPagination.take,
+        skip: prevPagination.skip + prevPagination.take, 
+        lastCount: posts.length
+      }));
+    }
   };
 
   return postList.length > 0 ? (
@@ -70,7 +85,7 @@ const Feed = ({ filterOptions, keyWord }: Params) => {
       </Grid>
       { pagination.lastCount != 0 && (
         <Box mt={2}>
-          <button onClick={() => {loadMorePosts()}}>Load More</button>
+          <Button onClick={() => {loadMorePosts()}}>Load More</Button>
         </Box>
       )}
     </>
@@ -78,7 +93,7 @@ const Feed = ({ filterOptions, keyWord }: Params) => {
       <>
         { pagination.lastCount != 0 && (
           <Box mt={2}>
-            <button onClick={() => {loadMorePosts()}}>Load More</button>
+            <Button onClick={() => {loadMorePosts()}}>Load More</Button>
           </Box>
         )}
       </>

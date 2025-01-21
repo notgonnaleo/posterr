@@ -3,7 +3,6 @@ import { Button, Box, TextareaAutosize, styled, FormControl } from '@mui/materia
 import { gray } from '../../theme/themePrimitives';
 import SendIcon from '@mui/icons-material/Send';
 import PostFactory from '../../factories/PostFactory';
-import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../models/Context';
 import { sampleUserId } from '../../utils/environments';
 
@@ -35,7 +34,6 @@ const TextAreaPost = styled(TextareaAutosize)(({ theme }) => ({
 }));
 
 const CreatePostSection = () => {
-  const navigate = useNavigate();
   const mockedUserContext: UserContext = {
     UserId: sampleUserId,
   };
@@ -53,7 +51,7 @@ const CreatePostSection = () => {
       }
       const response = await PostFactory.New(userContext.UserId, postContent.trim());
       if (response) {
-        navigate('/');
+        window.location.href = '/';
       } else {
         alert('Error');
       }

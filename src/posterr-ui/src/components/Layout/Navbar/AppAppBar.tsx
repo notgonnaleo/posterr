@@ -14,6 +14,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ColorModeIconDropdown from './ColorModeIconDropdown';
 import { Typography } from '@mui/material';
 import SendTimeExtensionIcon from '@mui/icons-material/SendTimeExtension';
+import { Link } from 'react-router-dom';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -55,7 +56,10 @@ export default function AppAppBar() {
                Posterr
             </Typography>
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Button variant="text" color="info" size="small">
+              <Button
+                component={Link} 
+                to="/" 
+                variant="text" color="info" size="small">
                 Homepage
               </Button>
             </Box>
