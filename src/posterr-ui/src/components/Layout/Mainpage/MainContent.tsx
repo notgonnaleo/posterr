@@ -11,6 +11,11 @@ export default function MainContent() {
     FilterOptions.Latest
   );
   const [keywordSearch, setKeywordSearch] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>("");
+
+  const handleSearch = () => {
+    setKeywordSearch(searchInput);
+  };
 
   return (
     <Box sx={{ flex: 1 }}>
@@ -25,16 +30,11 @@ export default function MainContent() {
         <TextField
           label="Search by Keyword"
           variant="outlined"
-          value={keywordSearch}
-          onChange={(e) => setKeywordSearch(e.target.value)}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           fullWidth
         />
-        <Button
-          variant="contained"
-          onClick={() => {
-            setFilterOption(FilterOptions.Latest); 
-          }}
-        >
+        <Button variant="contained" onClick={handleSearch}>
           Search
         </Button>
       </Box>

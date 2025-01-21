@@ -6,7 +6,7 @@
         {
             Parameters = new
             {
-                Keyword = keyword,
+                Keyword = $"%{keyword}%",
             };
 
             Query = @"
@@ -32,7 +32,7 @@
                 ON ru.""UserId"" = r.""RepostUserId""
             WHERE 
                 p.""PostContent""
-            LIKE '%@Keyword%'
+            LIKE @Keyword
             "; 
         }
 

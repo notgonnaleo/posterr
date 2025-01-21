@@ -18,9 +18,9 @@ const Feed = ({ filterOptions, keyWord }: Params) => {
   const mockedUserContext: UserContext = {
     UserId: sampleUserId,
   };
-  const [keywordSearch] = useState<string>(keyWord);
   const [userContext] = useState<UserContext>(mockedUserContext);
   const [postList, setPostList] = useState<FeedItem[]>([]);
+
   const [pagination, setPagination] = useState<Pagination>({
     take: 3,
     skip: 0,
@@ -31,14 +31,18 @@ const Feed = ({ filterOptions, keyWord }: Params) => {
     loadMorePosts();
   }, []);
 
+  useEffect(() => {
+    loadMorePosts();
+  }, [keyWord]);
+
   const loadMorePosts = async () => {
     let posts: FeedItem[] = [];
 
-    if(keywordSearch != '') {
-      const response = await PostFactory.Keyword(keywordSearch);
+    if(keyWord != '') {
+      const response = await PostFactory.Keyword(keyWord);
       posts = response;
-    }
-
+      setPostList(posts);
+    } else {
     if (filterOptions === FilterOptions.Latest) {
       const response = await PostFactory.getLatestPosts(pagination.take, pagination.skip);
       posts = response;
@@ -52,6 +56,7 @@ const Feed = ({ filterOptions, keyWord }: Params) => {
       skip: prevPagination.skip + prevPagination.take, 
       lastCount: posts.length
     }));
+  }
   };
 
   return postList.length > 0 ? (
