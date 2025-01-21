@@ -17,7 +17,7 @@
                 ,p.""TotalReposts""
                 ,p.""DateCreated""
                 ,p.""PostId"" AS ""PostUserId""
-                ,u.""Username""
+                ,u.""Username"" AS ""PostUsername""
             FROM ""Posts"" p
             JOIN ""Users"" u ON p.""UserId"" = u.""UserId""
             ORDER BY p.""TotalReposts"" DESC
