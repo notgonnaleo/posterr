@@ -75,6 +75,9 @@ If I had more time, I would revisit this feature, giving it priority from the st
 What happened:
 When the filter is changed, React’s state management caused issues with the re-rendering of the posts list due to the pagination system. Although the backend returns the updated data, the UI struggles to reflect the changes.
 
+3. Unit, Integration and E2E Testing:
+With more time I would have implemented both unit tests with MSTest and Moq to check against my handlers services business logic, integration tests to tests whole features using database calls and also a E2E Test project with cypress on the UI to validate my UI features. Due the amount of time and different priorities during the development I couldn't implement those, but they are on the list of key improvements to be done in the app.
+
 How I would solve it with more time:
 With the IntersectionObserver fully implemented, I’d likely avoid running into this issue. But if it persists, my solution would be to split the posts list into two components. One component would handle the pagination, while the other could manage the filter updates—ensuring the UI can properly re-render when necessary.
 
