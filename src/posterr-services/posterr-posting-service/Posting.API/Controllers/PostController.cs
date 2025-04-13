@@ -44,7 +44,7 @@ namespace Posterr.API.Controllers
         public async Task<ActionResult<bool>> CreatePost(CreatePostRequest request)
         {
             var response = await _mediator.Send(request);
-            return Ok(response);
+            return Ok(request);
         }
 
         [HttpPost]
@@ -52,7 +52,7 @@ namespace Posterr.API.Controllers
         public async Task<ActionResult<bool>> Repost(RepostRequest request)
         {
             var response = await _mediator.Send(request);
-            return Ok(response);
+            return Ok(request);
         }
 
         [HttpGet]
